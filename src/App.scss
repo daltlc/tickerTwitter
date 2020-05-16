@@ -1,0 +1,10 @@
+
+.main{
+    &__inner{
+        margin-bottom: 20px;
+        display: flex;
+        button {
+            margin-left: 20px;
+        }
+    }
+}
