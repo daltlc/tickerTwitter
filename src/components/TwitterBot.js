@@ -7,6 +7,8 @@ import Button from '@material-ui/core/Button';
 import StarIcon from '@material-ui/icons/Star';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import { RecoilRoot, atom, selector, useRecoilState, useRecoilValue } from 'recoil';
+import { selectedTabState } from './recoil/Atoms';
 
 class TwitterBot extends React.Component {
 	constructor(props) {
@@ -18,9 +20,12 @@ class TwitterBot extends React.Component {
 		loaded: [],
 		searched: [],
 		searchedTicker: '',
-		addedTickers: []
+		addedTickers: [ this.tabsFunctional ]
 	};
-
+	tabsFunctional() {
+		const [ tab, setTab ] = useRecoilState(selectedTabState);
+		return tab;
+	}
 	async componentDidMount() {
 		//Gathering data from heroku API I built and adding tweets to loaded array state
 		let feed = await axios.get('https://boiling-plains-63502.herokuapp.com/');
@@ -33,8 +38,9 @@ class TwitterBot extends React.Component {
 		//Watching input and changing searchedTicker string while typing
 		this.setState({ searchedTicker: e.target.value });
 	};
+
 	addTicker = () => {
-		//Adding ticker to saved list
+		// Adding ticker to saved list
 		this.setState((state) => {
 			const tickers = state.addedTickers.push(state.searchedTicker);
 			return {
@@ -42,6 +48,9 @@ class TwitterBot extends React.Component {
 				searchedTicker: ''
 			};
 		});
+		//Using Facebook's new Recoil state management
+		// const [ tab, setselectedTabState ] = useRecoilState(selectedTabState);
+		// setselectedTabState(this.state.searchedTicker);
 	};
 	removeTicker = () => {
 		this.setState((state) => {});
@@ -57,13 +66,12 @@ class TwitterBot extends React.Component {
 			searchedTicker = this.state.searchedTicker.trim().toLowerCase();
 		if (searchedTicker.length > 0) {
 			loaded = loaded.filter(function(i) {
-				console.log('typing..');
 				return i.text.toLowerCase().match(searchedTicker);
 			});
 		}
 		return (
-			<div class="main" style={{ marginTop: 40 + 'px' }}>
-				<div class="main__inner">
+			<div className="main" style={{ marginTop: 40 + 'px' }}>
+				<div className="main__inner">
 					<TextField
 						type="text"
 						value={this.state.searchedTicker}
@@ -73,23 +81,15 @@ class TwitterBot extends React.Component {
 						label="Search"
 						variant="outlined"
 					/>
-
-					{/* <input
-					type="text"
-					value={this.state.searchedTicker}
-					onChange={this.handleChange}
-					placeholder="Type here..."
-				/> */}
 					<Button onClick={this.addTicker} variant="contained" color="primary">
 						Add to favorites <StarIcon style={{ marginLeft: 10 + 'px' }} />
 					</Button>
 				</div>
 
-				<FilterTabs />
-				<p>{this.state.addedTickers}</p>
+				<FilterTabs tabs={this.state.addedTickers} />
 				<List>
 					{loaded.map(function(i) {
-						return <ListItem>{i.text}</ListItem>;
+						return <ListItem key={i.id}>{i.text}</ListItem>;
 					})}
 				</List>
 			</div>
