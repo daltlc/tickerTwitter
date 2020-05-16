@@ -1,10 +1,14 @@
 import React from 'react';
-import './App.css';
+import './App.scss';
 import TwitterBot from './components/TwitterBot';
+import Container from '@material-ui/core/Container';
+
 function App() {
 	return (
 		<div className="App">
-			<TwitterBot />
+			<Container maxWidth="lg">
+				<TwitterBot />
+			</Container>
 		</div>
 	);
 }

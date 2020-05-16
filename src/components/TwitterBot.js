@@ -1,17 +1,26 @@
 import axios from 'axios';
 import React from 'react';
+import FilterTabs from './FilterTabs';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import StarIcon from '@material-ui/icons/Star';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
 
 class TwitterBot extends React.Component {
 	constructor(props) {
 		super(props);
 		this.handleChange = this.handleChange.bind(this);
 	}
+
 	state = {
 		loaded: [],
 		searched: [],
 		searchedTicker: '',
 		addedTickers: []
 	};
+
 	async componentDidMount() {
 		//Gathering data from heroku API I built and adding tweets to loaded array state
 		let feed = await axios.get('https://boiling-plains-63502.herokuapp.com/');
@@ -53,20 +62,36 @@ class TwitterBot extends React.Component {
 			});
 		}
 		return (
-			<div>
-				<input
+			<div class="main" style={{ marginTop: 40 + 'px' }}>
+				<div class="main__inner">
+					<TextField
+						type="text"
+						value={this.state.searchedTicker}
+						onChange={this.handleChange}
+						placeholder="Type here..."
+						id="outlined-basic"
+						label="Search"
+						variant="outlined"
+					/>
+
+					{/* <input
 					type="text"
 					value={this.state.searchedTicker}
 					onChange={this.handleChange}
 					placeholder="Type here..."
-				/>
-				<button onClick={this.addTicker}>Add to list</button>
+				/> */}
+					<Button onClick={this.addTicker} variant="contained" color="primary">
+						Add to favorites <StarIcon style={{ marginLeft: 10 + 'px' }} />
+					</Button>
+				</div>
+
+				<FilterTabs />
 				<p>{this.state.addedTickers}</p>
-				<ul>
+				<List>
 					{loaded.map(function(i) {
-						return <li>{i.text}</li>;
+						return <ListItem>{i.text}</ListItem>;
 					})}
-				</ul>
+				</List>
 			</div>
 		);
 	}
