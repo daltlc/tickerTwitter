@@ -9,7 +9,8 @@ class TwitterBot extends React.Component {
 	state = {
 		loaded: [],
 		searched: [],
-		searchedTicker: ''
+		searchedTicker: '',
+		addedTickers: []
 	};
 	async componentDidMount() {
 		//Gathering data from heroku API I built and adding tweets to loaded array state
@@ -23,8 +24,26 @@ class TwitterBot extends React.Component {
 		//Watching input and changing searchedTicker string while typing
 		this.setState({ searchedTicker: e.target.value });
 	};
+	addTicker = () => {
+		//Adding ticker to saved list
+		this.setState((state) => {
+			const tickers = state.addedTickers.push(state.searchedTicker);
+			return {
+				tickers,
+				searchedTicker: ''
+			};
+		});
+	};
+	removeTicker = () => {
+		this.setState((state) => {});
+	};
+
+	savedTickerFilter = (f) => {
+		this.setState({ searchedTicker: f.target.value });
+	};
+
 	render() {
-		//Trimming searched input to all lowercase and filtering displayed post based on search
+		//Trimming searched input to all lowercase and filtering displayed post within return based on search
 		let loaded = this.state.loaded,
 			searchedTicker = this.state.searchedTicker.trim().toLowerCase();
 		if (searchedTicker.length > 0) {
@@ -41,6 +60,8 @@ class TwitterBot extends React.Component {
 					onChange={this.handleChange}
 					placeholder="Type here..."
 				/>
+				<button onClick={this.addTicker}>Add to list</button>
+				<p>{this.state.addedTickers}</p>
 				<ul>
 					{loaded.map(function(i) {
 						return <li>{i.text}</li>;
