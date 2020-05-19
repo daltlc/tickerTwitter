@@ -1,26 +1,37 @@
 import axios from 'axios';
 import React from 'react';
-import FilterTabs from './FilterTabs';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import StarIcon from '@material-ui/icons/Star';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import Paper from '@material-ui/core/Paper';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import { RecoilRoot, atom, selector, useRecoilState, useRecoilValue } from 'recoil';
+import { selectedTabState } from './recoil/Atoms';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeadphones } from '@fortawesome/free-solid-svg-icons';
 
 class TwitterBot extends React.Component {
 	constructor(props) {
 		super(props);
 		this.handleChange = this.handleChange.bind(this);
+		this.handleTabState = this.handleTabState.bind(this);
 	}
 
 	state = {
 		loaded: [],
 		searched: [],
 		searchedTicker: '',
+		actveTab: '',
 		addedTickers: []
 	};
-
+	tabsFunctional() {
+		const [ tab, setTab ] = useRecoilState(selectedTabState);
+		this.setState.searchedTicker(tab);
+	}
 	async componentDidMount() {
 		//Gathering data from heroku API I built and adding tweets to loaded array state
 		let feed = await axios.get('https://boiling-plains-63502.herokuapp.com/');
@@ -33,8 +44,19 @@ class TwitterBot extends React.Component {
 		//Watching input and changing searchedTicker string while typing
 		this.setState({ searchedTicker: e.target.value });
 	};
+
+	handleTabChange = (event, newValue) => {
+		// setValue(newValue);
+		this.setState({ tabValue: newValue });
+	};
+
+	handleTabState = (e, data) => {
+		this.setState({ searchedTicker: data });
+		console.log(data);
+	};
+
 	addTicker = () => {
-		//Adding ticker to saved list
+		// Adding ticker to saved list
 		this.setState((state) => {
 			const tickers = state.addedTickers.push(state.searchedTicker);
 			return {
@@ -57,13 +79,12 @@ class TwitterBot extends React.Component {
 			searchedTicker = this.state.searchedTicker.trim().toLowerCase();
 		if (searchedTicker.length > 0) {
 			loaded = loaded.filter(function(i) {
-				console.log('typing..');
 				return i.text.toLowerCase().match(searchedTicker);
 			});
 		}
 		return (
-			<div class="main" style={{ marginTop: 40 + 'px' }}>
-				<div class="main__inner">
+			<div className="main" style={{ marginTop: 40 + 'px' }}>
+				<div className="main__inner">
 					<TextField
 						type="text"
 						value={this.state.searchedTicker}
@@ -73,23 +94,34 @@ class TwitterBot extends React.Component {
 						label="Search"
 						variant="outlined"
 					/>
-
-					{/* <input
-					type="text"
-					value={this.state.searchedTicker}
-					onChange={this.handleChange}
-					placeholder="Type here..."
-				/> */}
 					<Button onClick={this.addTicker} variant="contained" color="primary">
 						Add to favorites <StarIcon style={{ marginLeft: 10 + 'px' }} />
 					</Button>
 				</div>
-
-				<FilterTabs />
-				<p>{this.state.addedTickers}</p>
+				{/* This will be the Filter Tabs component and that will import the list thats below the Paper component below */}{' '}
+				<Paper square>
+					<Tabs
+						value={this.state.tabValue}
+						indicatorColor="primary"
+						textColor="primary"
+						onChange={this.handleTabChange}
+					>
+						<Tab value="all" label="All" />
+						{//Mapping through tabs that are added in TwitterBot component and passed down as props to this component
+						this.state.addedTickers.map((i) => {
+							return (
+								// <div className="filter-tab">
+								<Tab value={i} label={i} onClick={(e) => this.handleTabState(e, i)} />
+								// <CloseIcon />
+								// </div>
+							);
+						})}
+					</Tabs>
+				</Paper>
+				{/* This List needs to be a child functional component that gets passed an array  */}
 				<List>
 					{loaded.map(function(i) {
-						return <ListItem>{i.text}</ListItem>;
+						return <ListItem key={i.id}>{i.text}</ListItem>;
 					})}
 				</List>
 			</div>
