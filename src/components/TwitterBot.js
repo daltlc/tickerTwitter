@@ -40,6 +40,7 @@ class TwitterBot extends React.Component {
 			loaded: tweets
 		});
 	}
+
 	handleChange = (e) => {
 		//Watching input and changing searchedTicker string while typing
 		this.setState({ searchedTicker: e.target.value });
@@ -53,6 +54,10 @@ class TwitterBot extends React.Component {
 	handleTabState = (e, data) => {
 		this.setState({ searchedTicker: data });
 		console.log(data);
+	};
+
+	showAll = () => {
+		this.setState({ searchedTicker: '' });
 	};
 
 	addTicker = () => {
@@ -106,7 +111,7 @@ class TwitterBot extends React.Component {
 						textColor="primary"
 						onChange={this.handleTabChange}
 					>
-						<Tab value="all" label="All" />
+						<Tab label="All" onClick={this.showAll} />
 						{//Mapping through tabs that are added in TwitterBot component and passed down as props to this component
 						this.state.addedTickers.map((i) => {
 							return (
