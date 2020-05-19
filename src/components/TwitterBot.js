@@ -120,9 +120,12 @@ class TwitterBot extends React.Component {
 						this.state.addedTickers.map((i) => {
 							return (
 								// <div className="filter-tab">
-								<Tab label={i} onClick={(e) => this.handleTabState(e, i)} />
-								// <CloseIcon value={i} onClick={(e) => this.removeTicker(e, i)} />
-								// </div>
+								<Tab label={i} key={i} onClick={(e) => this.handleTabState(e, i)} />
+								/* This will remove the tab and switch back to all tab /*
+								/* <CloseIcon value={i} onClick={(e) => this.removeTicker(e, i)} /> */
+								/*This will splice the loaded array above with the tab selected and then return the length of array giving how many tweets are within each ticker search */
+								/* <p> {this.state.loaded.splice(i).length}</p> */
+								/* </div> */
 							);
 						})}
 					</Tabs>
