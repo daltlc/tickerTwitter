@@ -13,6 +13,7 @@ import { RecoilRoot, atom, selector, useRecoilState, useRecoilValue } from 'reco
 import { selectedTabState } from './recoil/Atoms';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeadphones } from '@fortawesome/free-solid-svg-icons';
+import CloseIcon from '@material-ui/icons/Close';
 
 class TwitterBot extends React.Component {
 	constructor(props) {
@@ -26,12 +27,10 @@ class TwitterBot extends React.Component {
 		searched: [],
 		searchedTicker: '',
 		actveTab: '',
-		addedTickers: []
+		addedTickers: [],
+		tabValue: 0
 	};
-	tabsFunctional() {
-		const [ tab, setTab ] = useRecoilState(selectedTabState);
-		this.setState.searchedTicker(tab);
-	}
+
 	async componentDidMount() {
 		//Gathering data from heroku API I built and adding tweets to loaded array state
 		let feed = await axios.get('https://boiling-plains-63502.herokuapp.com/');
@@ -47,16 +46,19 @@ class TwitterBot extends React.Component {
 	};
 
 	handleTabChange = (event, newValue) => {
-		// setValue(newValue);
+		//Selecting the correct tab
+		console.log(newValue);
 		this.setState({ tabValue: newValue });
 	};
 
 	handleTabState = (e, data) => {
+		//This is changing searchedTicker state to the value of whichever tab is clicked
 		this.setState({ searchedTicker: data });
 		console.log(data);
 	};
 
 	showAll = () => {
+		//All tab
 		this.setState({ searchedTicker: '' });
 	};
 
@@ -70,8 +72,10 @@ class TwitterBot extends React.Component {
 			};
 		});
 	};
-	removeTicker = () => {
-		this.setState((state) => {});
+	removeTicker = (e, data) => {
+		let tickers = this.state.addedTickers;
+		console.log(tickers.splice(tickers.indexOf(data)));
+		// this.showAll();
 	};
 
 	savedTickerFilter = (f) => {
@@ -116,8 +120,8 @@ class TwitterBot extends React.Component {
 						this.state.addedTickers.map((i) => {
 							return (
 								// <div className="filter-tab">
-								<Tab value={i} label={i} onClick={(e) => this.handleTabState(e, i)} />
-								// <CloseIcon />
+								<Tab label={i} onClick={(e) => this.handleTabState(e, i)} />
+								// <CloseIcon value={i} onClick={(e) => this.removeTicker(e, i)} />
 								// </div>
 							);
 						})}
