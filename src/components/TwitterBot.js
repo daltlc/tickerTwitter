@@ -65,13 +65,15 @@ class TwitterBot extends React.Component {
 
 	addTicker = () => {
 		// Adding ticker to saved list
-		this.setState((state) => {
-			const tickers = state.addedTickers.push(state.searchedTicker);
-			return {
-				tickers,
-				searchedTicker: ''
-			};
-		});
+		if (this.state.searchedTicker.length > 0) {
+			this.setState((state) => {
+				const tickers = state.addedTickers.push(state.searchedTicker);
+				return {
+					tickers,
+					searchedTicker: ''
+				};
+			});
+		}
 	};
 	removeTicker = (e, data) => {
 		let tickers = this.state.addedTickers;
@@ -94,12 +96,16 @@ class TwitterBot extends React.Component {
 		}
 		return (
 			<div className="main" style={{ marginTop: 40 + 'px' }}>
+				<h2>
+					Search a stock ticker below to find relevant tweets, then click add to favorite to create a saved
+					tab.
+				</h2>
 				<div className="main__inner">
 					<TextField
 						type="text"
 						value={this.state.searchedTicker}
 						onChange={this.handleChange}
-						placeholder="Type here..."
+						placeholder="Search Ticker..."
 						id="outlined-basic"
 						label="Search"
 						variant="outlined"
