@@ -12,8 +12,9 @@ import Tab from '@material-ui/core/Tab';
 import { RecoilRoot, atom, selector, useRecoilState, useRecoilValue } from 'recoil';
 import { selectedTabState } from './recoil/Atoms';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeadphones } from '@fortawesome/free-solid-svg-icons';
+import TwitterIcon from '@material-ui/icons/Twitter';
 import CloseIcon from '@material-ui/icons/Close';
+import Highlighter from 'react-highlight-words';
 
 class TwitterBot extends React.Component {
 	constructor(props) {
@@ -115,25 +116,44 @@ class TwitterBot extends React.Component {
 						textColor="primary"
 						onChange={this.handleTabChange}
 					>
-						<Tab label="All" onClick={this.showAll} />
+						<Tab label={<div>All ({loaded.length})</div>} onClick={this.showAll} />
 						{//Mapping through tabs that are added in TwitterBot component and passed down as props to this component
 						this.state.addedTickers.map((i) => {
 							return (
-								// <div className="filter-tab">
-								<Tab label={i} key={i} onClick={(e) => this.handleTabState(e, i)} />
+								<Tab
+									label={
+										<div>
+											{i}
+											({loaded.length})
+										</div>
+									}
+									key={i}
+									onClick={(e) => this.handleTabState(e, i)}
+								/>
 								/* This will remove the tab and switch back to all tab /*
 								/* <CloseIcon value={i} onClick={(e) => this.removeTicker(e, i)} /> */
 								/*This will splice the loaded array above with the tab selected and then return the length of array giving how many tweets are within each ticker search */
 								/* <p> {this.state.loaded.splice(i).length}</p> */
-								/* </div> */
 							);
 						})}
 					</Tabs>
 				</Paper>
 				{/* This List needs to be a child functional component that gets passed an array  */}
-				<List>
+				<List className="tweets">
 					{loaded.map(function(i) {
-						return <ListItem key={i.id}>{i.text}</ListItem>;
+						return (
+							<ListItem key={i.id}>
+								{' '}
+								<TwitterIcon style={{ marginRight: 10 + 'px' }} />
+								<Highlighter
+									highlightClassName="YourHighlightClass"
+									searchWords={[ searchedTicker ]}
+									autoEscape={true}
+									textToHighlight={i.text}
+								/>,
+								{/* {i.text} */}
+							</ListItem>
+						);
 					})}
 				</List>
 			</div>
