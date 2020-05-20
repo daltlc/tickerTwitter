@@ -1,7 +1,22 @@
+@import "./partials/_variables"; // Declare global variables here
+
+html {
+    background-color: $bg--dark;
+    color: $text--light;
+}
+
+.MuiTabs-flexContainer {
+    flex-wrap: wrap !important;
+}
+
 .main {
     &__inner {
         margin-bottom: 20px;
         display: flex;
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        width: max-content;
 
         button {
             margin-left: 20px;
@@ -9,15 +24,30 @@
     }
 }
 
+.tab-container {
+    display: flex !important;
+    align-items: center !important;
+
+    &:hover {
+        .tabs-label {
+            color: #3f51b5 !important;
+        }
+    }
+}
+
+.tabs-label {
+    color: black !important;
+
+}
+
+
+
 .filter-tab {
     display: flex;
     align-items: center;
 }
 
 
-.tweets {
-    background-color: #3f51b50b;
-}
 
 
 //Tabs

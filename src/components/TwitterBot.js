@@ -9,8 +9,6 @@ import ListItem from '@material-ui/core/ListItem';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import { RecoilRoot, atom, selector, useRecoilState, useRecoilValue } from 'recoil';
-import { selectedTabState } from './recoil/Atoms';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import CloseIcon from '@material-ui/icons/Close';
@@ -28,8 +26,7 @@ class TwitterBot extends React.Component {
 		searched: [],
 		searchedTicker: '',
 		actveTab: '',
-		addedTickers: [],
-		tabValue: 0
+		addedTickers: []
 	};
 
 	async componentDidMount() {
@@ -48,18 +45,16 @@ class TwitterBot extends React.Component {
 
 	handleTabChange = (event, newValue) => {
 		//Selecting the correct tab
-		console.log(newValue);
 		this.setState({ tabValue: newValue });
 	};
 
 	handleTabState = (e, data) => {
 		//This is changing searchedTicker state to the value of whichever tab is clicked
 		this.setState({ searchedTicker: data });
-		console.log(data);
 	};
 
 	showAll = () => {
-		//All tab
+		//Clearing searched state
 		this.setState({ searchedTicker: '' });
 	};
 
@@ -73,12 +68,21 @@ class TwitterBot extends React.Component {
 					searchedTicker: ''
 				};
 			});
+		} else {
+			alert('Plase enter a symbol to search');
 		}
 	};
 	removeTicker = (e, data) => {
+		// Removing tab
 		let tickers = this.state.addedTickers;
-		console.log(tickers.splice(tickers.indexOf(data)));
-		// this.showAll();
+		if (tickers.indexOf(data) === 0) {
+			tickers.shift();
+			this.showAll();
+			console.log('zero');
+		} else {
+			tickers.splice(tickers.indexOf(data));
+			this.showAll();
+		}
 	};
 
 	savedTickerFilter = (f) => {
@@ -94,12 +98,19 @@ class TwitterBot extends React.Component {
 				return i.text.toLowerCase().match(searchedTicker);
 			});
 		}
+
+		//Copying loaded state and attempting to added individual numbers of tweets to each tab
+		let copyOfLoaded = [ ...this.state.loaded ];
+
+		let filterCopy = copyOfLoaded.filter(function(i) {
+			return i.text.toLowerCase().match(searchedTicker);
+		});
+		let numOfTweets = filterCopy.length;
+
 		return (
 			<div className="main" style={{ marginTop: 40 + 'px' }}>
-				<h2>
-					Search a stock ticker below to find relevant tweets, then click add to favorite to create a saved
-					tab.
-				</h2>
+				<h4>Search a stock symbol below to find relevant tweets from Stocktwitz.</h4>
+				<h4>You may then press Add to Favorites to create a saved tab for later reference.</h4>
 				<div className="main__inner">
 					<TextField
 						type="text"
@@ -116,48 +127,40 @@ class TwitterBot extends React.Component {
 				</div>
 				{/* This will be the Filter Tabs component and that will import the list thats below the Paper component below */}{' '}
 				<Paper square>
-					<Tabs
-						value={this.state.tabValue}
-						indicatorColor="primary"
-						textColor="primary"
-						onChange={this.handleTabChange}
-					>
-						<Tab label={<div>All ({loaded.length})</div>} onClick={this.showAll} />
+					<Tabs indicatorColor="primary" textColor="primary" onChange={this.handleTabChange}>
+						<Tab label={<div className="tabs-label">All ({loaded.length})</div>} onClick={this.showAll} />
 						{//Mapping through tabs that are added in TwitterBot component and passed down as props to this component
 						this.state.addedTickers.map((i) => {
 							return (
-								<Tab
-									label={
-										<div>
-											{i}
-											({loaded.length})
-										</div>
-									}
-									key={i}
-									onClick={(e) => this.handleTabState(e, i)}
-								/>
-								/* This will remove the tab and switch back to all tab /*
-								/* <CloseIcon value={i} onClick={(e) => this.removeTicker(e, i)} /> */
-								/*This will splice the loaded array above with the tab selected and then return the length of array giving how many tweets are within each ticker search */
-								/* <p> {this.state.loaded.splice(i).length}</p> */
+								<div className="tab-container">
+									<Tab
+										label={
+											<div className="tabs-label">
+												{i}
+												({numOfTweets})
+											</div>
+										}
+										key={i}
+										onClick={(e) => this.handleTabState(e, i)}
+									/>
+									<CloseIcon value={i} onClick={(e) => this.removeTicker(e, i)} />
+								</div>
 							);
 						})}
 					</Tabs>
 				</Paper>
-				{/* This List needs to be a child functional component that gets passed an array  */}
 				<List className="tweets">
 					{loaded.map(function(i) {
 						return (
 							<ListItem key={i.id}>
 								{' '}
-								<TwitterIcon style={{ marginRight: 10 + 'px' }} />
+								<TwitterIcon style={{ marginRight: 10 + 'px', color: '#1da1f2' }} />
 								<Highlighter
 									highlightClassName="YourHighlightClass"
 									searchWords={[ searchedTicker ]}
 									autoEscape={true}
 									textToHighlight={i.text}
 								/>,
-								{/* {i.text} */}
 							</ListItem>
 						);
 					})}
