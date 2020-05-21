@@ -12,7 +12,7 @@ export default class StockTwitz extends Component {
 
 		this.setState({ loading: true });
 		axios
-			.get('/lambda/' + api)
+			.get('/.netlify/functions/' + api)
 			.then((response) => response.json())
 			.then((json) => this.setState({ loading: false, msg: json.msg }));
 	};

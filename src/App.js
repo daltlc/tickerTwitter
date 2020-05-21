@@ -8,8 +8,8 @@ function App() {
 	return (
 		<div className="App">
 			<Container maxWidth="lg">
-				{/* <TwitterBot /> */}
-				<StockTwitz />
+				<TwitterBot />
+				{/* <StockTwitz /> */}
 			</Container>
 		</div>
 	);

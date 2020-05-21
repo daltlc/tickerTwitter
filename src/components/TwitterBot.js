@@ -31,7 +31,7 @@ class TwitterBot extends React.Component {
 
 	async componentDidMount() {
 		//Gathering data from heroku API I built and adding tweets to loaded array state
-		let feed = await axios.get('https://boiling-plains-63502.herokuapp.com/');
+		let feed = await axios.get('https://boiling-plains-63502.herokuapp.com/twitter');
 		let tweets = feed.data;
 		this.setState({
 			loaded: tweets
