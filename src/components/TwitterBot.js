@@ -1,7 +1,4 @@
-import axios from 'axios';
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import StarIcon from '@material-ui/icons/Star';
 import List from '@material-ui/core/List';
@@ -9,10 +6,12 @@ import ListItem from '@material-ui/core/ListItem';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import TextField from '@material-ui/core/TextField';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import CloseIcon from '@material-ui/icons/Close';
 import Highlighter from 'react-highlight-words';
+import axios from 'axios';
 
 class TwitterBot extends React.Component {
 	constructor(props) {
@@ -26,7 +25,8 @@ class TwitterBot extends React.Component {
 		searched: [],
 		searchedTicker: '',
 		actveTab: '',
-		addedTickers: []
+		addedTickers: [],
+		tabValue: 0
 	};
 
 	async componentDidMount() {
@@ -45,12 +45,14 @@ class TwitterBot extends React.Component {
 
 	handleTabChange = (event, newValue) => {
 		//Selecting the correct tab
+		console.log(newValue);
 		this.setState({ tabValue: newValue });
 	};
 
 	handleTabState = (e, data) => {
 		//This is changing searchedTicker state to the value of whichever tab is clicked
-		this.setState({ searchedTicker: data });
+		console.log(data);
+		this.setState({ searchedTicker: data.header, tabValue: data });
 	};
 
 	showAll = () => {
@@ -60,14 +62,14 @@ class TwitterBot extends React.Component {
 
 	addTicker = () => {
 		// Adding ticker to saved list
+		console.log('running', this.state.addedTickers, this.state.searchedTicker);
 		if (this.state.searchedTicker.length > 0) {
-			this.setState((state) => {
-				const tickers = state.addedTickers.push(state.searchedTicker);
-				return {
-					tickers,
-					searchedTicker: ''
-				};
+			const addedCopy = [ ...this.state.addedTickers ];
+			addedCopy.push({
+				header: this.state.searchedTicker,
+				count: this.getCount()
 			});
+			this.setState({ addedTickers: addedCopy, searchedTicker: '' });
 		} else {
 			alert('Plase enter a symbol to search');
 		}
@@ -75,7 +77,7 @@ class TwitterBot extends React.Component {
 	removeTicker = (e, data) => {
 		// Removing tab
 		let tickers = this.state.addedTickers;
-		if (tickers.indexOf(data) === 0) {
+		if (tickers.filter((val) => val.header === data.header).length === 1) {
 			tickers.shift();
 			this.showAll();
 			console.log('zero');
@@ -89,24 +91,29 @@ class TwitterBot extends React.Component {
 		this.setState({ searchedTicker: f.target.value });
 	};
 
+	getCount = () => {
+		//Copying loaded state and attempting to added individual numbers of tweets to each tab
+		let copyOfLoaded = [ ...this.state.loaded ];
+		let searchedTicker = this.state.searchedTicker.trim().toLowerCase();
+		let filterCopy = copyOfLoaded.filter(function(i) {
+			return i.text.toLowerCase().match(searchedTicker);
+		});
+		return filterCopy.length;
+	};
+
 	render() {
 		//Trimming searched input to all lowercase and filtering displayed post within return based on search
 		let loaded = this.state.loaded,
-			searchedTicker = this.state.searchedTicker.trim().toLowerCase();
+			searchedTicker = this.state.searchedTicker.trim().toLowerCase(),
+			origLength = this.state.loaded.length;
 		if (searchedTicker.length > 0) {
 			loaded = loaded.filter(function(i) {
 				return i.text.toLowerCase().match(searchedTicker);
 			});
 		}
 
-		//Copying loaded state and attempting to added individual numbers of tweets to each tab
-		let copyOfLoaded = [ ...this.state.loaded ];
-
-		let filterCopy = copyOfLoaded.filter(function(i) {
-			return i.text.toLowerCase().match(searchedTicker);
-		});
-		let numOfTweets = filterCopy.length;
-
+		//let numOfTweets = this.getCount();
+		console.log(this.state.tabValue);
 		return (
 			<div className="main" style={{ marginTop: 40 + 'px' }}>
 				<h4>Search a stock symbol below to find relevant tweets from Stocktwitz.</h4>
@@ -128,7 +135,20 @@ class TwitterBot extends React.Component {
 				{/* This will be the Filter Tabs component and that will import the list thats below the Paper component below */}{' '}
 				<Paper square>
 					<Tabs indicatorColor="primary" textColor="primary" onChange={this.handleTabChange}>
-						<Tab label={<div className="tabs-label">All ({loaded.length})</div>} onClick={this.showAll} />
+						<Tab
+							label={
+								<div className="tabs-label">
+									All (
+									{this.state.searchedTicker !== '' && this.state.tabValue !== 0 ? (
+										origLength
+									) : (
+										loaded.length
+									)}
+									)
+								</div>
+							}
+							onClick={this.showAll}
+						/>
 						{//Mapping through tabs that are added in TwitterBot component and passed down as props to this component
 						this.state.addedTickers.map((i) => {
 							return (
@@ -136,8 +156,7 @@ class TwitterBot extends React.Component {
 									<Tab
 										label={
 											<div className="tabs-label">
-												{i}
-												({numOfTweets})
+												{i.header}({i.count})
 											</div>
 										}
 										key={i}
@@ -160,7 +179,8 @@ class TwitterBot extends React.Component {
 									searchWords={[ searchedTicker ]}
 									autoEscape={true}
 									textToHighlight={i.text}
-								/>,
+								/>
+								,
 							</ListItem>
 						);
 					})}
