@@ -1,4 +1,7 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+#TickerTwitter
+
+
+This project was created to pull tweets from Stocktwitz on Twitter. Built using React, Material UI and works with a Node.js backend hosted on Heroku. 
 
 ## Available Scripts
 
