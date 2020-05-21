@@ -22,7 +22,7 @@ export default class StockTwitz extends Component {
 
 		return (
 			<p>
-				<button onClick={this.handleClick('fetch-tweets')}>{loading ? 'Loading...' : 'Call Lambda'}</button>
+				<button onClick={this.handleClick('fetch-tweets.js')}>{loading ? 'Loading...' : 'Call Lambda'}</button>
 
 				<span>{msg}</span>
 			</p>
