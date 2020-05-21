@@ -1,4 +1,4 @@
-#TickerTwitter
+# TickerTwitter
 
 
 This project was created to pull tweets from Stocktwitz on Twitter. Built using React, Material UI and works with a Node.js backend hosted on Heroku. 
