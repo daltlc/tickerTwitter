@@ -1,7 +1,8 @@
 @import "./partials/_variables"; // Declare global variables here
 
 html {
-    background-color: $bg--dark;
+    // background-color: $bg--dark;
+
     color: $text--light;
 }
 
@@ -77,4 +78,19 @@ a.tab-link.custom-link {
 
 a.tab-link.custom-link.active {
     background: #969696;
+}
+
+
+//StockTwitz API app
+
+
+.ticker-titles {
+    color: black;
+}
+
+.ticker-input {
+    border-bottom: 1px black solid;
+    width: 100%;
+    padding: 4px;
+    margin-bottom: 20px;
 }
