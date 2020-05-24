@@ -18,15 +18,11 @@ function TweetCard({ tweet }) {
 					<Avatar alt="user-avatar" src={user.avatar_url_ssl} />
 				</div>
 				<div>
-					{/* <Typography variant="h5">{user.name}</Typography> */}
 					<Typography>
 						{'\u0040'}
 						{user.username}
 					</Typography>
 				</div>
-				{/* <div>
-					<Typography variant="subtitle2">{timestamp}</Typography>
-				</div> */}
 			</div>
 			<Divider />
 			<Typography>{body}</Typography>
@@ -41,10 +37,7 @@ TweetCard.propTypes = {
 			username: PropTypes.string.isRequired,
 			avatar_url_ssl: PropTypes.string
 		}),
-		// created_at: PropTypes.string.isRequired,
-		// entities: PropTypes.shape({
-		//   sentiment: PropTypes.shape({}),
-		// }),
+
 		body: PropTypes.string.isRequired
 	}).isRequired
 };

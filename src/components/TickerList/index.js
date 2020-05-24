@@ -46,9 +46,8 @@ function TickerList({ activeSymbol, master, setActiveSymbol, removeSymbol }) {
 
 TickerList.propTypes = {
 	activeSymbol: PropTypes.string.isRequired,
-	// isLoading: PropTypes.bool.isRequired,
 	master: PropTypes.shape({}).isRequired,
-	// removeSymbol: PropTypes.func.isRequired,
+	removeSymbol: PropTypes.func.isRequired,
 	setActiveSymbol: PropTypes.func.isRequired
 };
 

@@ -9,24 +9,23 @@ import Content from './Content';
 import TickerList from './TickerList';
 
 function StockTwitsMain() {
+	//Using React hooks to hold state
 	const [ userInput, setUserInput ] = useState('');
 	const [ activeSymbol, setActiveSymbol ] = useState('');
 	const [ master, setMaster ] = useState({});
 	const selection = master[activeSymbol];
 
+	//This will run our buildBatchRequest function we imported from our helper.js
 	const handleSearch = (event) => {
 		event.preventDefault();
 		const requests = buildBatchRequest(userInput);
-
-		//Not here before
-		// setActiveSymbol(userInput);
 		Promise.all(requests).then((data) => {
 			const newMap = getSymbolMap(data);
 			setMaster({ ...master, ...newMap });
 			setUserInput('');
 		});
 	};
-
+	//This will remove the symbol from our ticker list
 	const removeSymbol = (id) => {
 		const newMap = omit(master, id);
 		setMaster(newMap);
