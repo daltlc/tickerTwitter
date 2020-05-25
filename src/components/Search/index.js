@@ -18,10 +18,8 @@ function Search({ handleSearch, userInput, setUserInput, removeSymbol }) {
 	};
 	return (
 		<div>
-			<div>
+			<div style={{ display: 'flex', alignItems: 'center', marginBottom: 20 + 'px' }}>
 				<SearchIcon />
-			</div>
-			<div>
 				<InputBase
 					className="ticker-input"
 					onKeyDown={handleKeyPress}
@@ -31,7 +29,7 @@ function Search({ handleSearch, userInput, setUserInput, removeSymbol }) {
 				/>
 			</div>
 			<div>
-				<Button fullWidth variant="outlined" color="primary" onClick={handleSearch}>
+				<Button variant="contained" color="primary" onClick={handleSearch}>
 					Add Symbols
 				</Button>
 			</div>

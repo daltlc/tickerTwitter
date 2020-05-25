@@ -7,7 +7,7 @@ function Tweets({ data }) {
 	const tweetCards = (
 		<Grid container spacing={2} justify="center">
 			{data.map((tweet) => (
-				<Grid item key={tweet.id} lg={8} md={9} xs={10}>
+				<Grid item key={tweet.id} lg={12} md={10} xs={10}>
 					<TweetCard tweet={tweet} />
 				</Grid>
 			))}

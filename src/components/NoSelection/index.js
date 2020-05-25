@@ -8,12 +8,12 @@ const NoSelection = ({ master }) => {
 	const symbolCount = getSymbolCount(master);
 
 	return (
-		<div>
+		<div className="no-selection">
 			<Typography align="center" color="textSecondary" gutterBottom variant="h4">
 				{`Data available for ${symbolCount}`}
 			</Typography>
 			<Typography align="center" variant="body1" color="textSecondary">
-				Make a selection above to start viewing tweets
+				Please select a ticker above to view tweets
 			</Typography>
 		</div>
 	);

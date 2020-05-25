@@ -15,23 +15,20 @@ function TickerList({ activeSymbol, master, setActiveSymbol, removeSymbol }) {
 	return (
 		<List>
 			{Object.entries(master).map(([ id, val ]) => (
-				<div key={id}>
+				<div className="ticker-container" key={id}>
 					<ListItem
+						className="ticker-titles"
 						alignItems="flex-start"
 						button
 						selected={id === activeSymbol}
 						onClick={() => setActiveSymbol(id)}
 					>
-						<ListItemText
-							className="ticker-titles"
-							primary={val.symbol.symbol}
-							secondary={val.symbol.title}
-						/>
+						<ListItemText primary={val.symbol.symbol} secondary={val.symbol.title} />
 						<ListItemSecondaryAction>
 							<Tooltip title="Remove this ticker" placement="right">
 								<span>
 									<IconButton edge="end" onClick={() => removeSymbol(id)}>
-										<RemoveIcon fontSize="small" />
+										<RemoveIcon fontSize="small" htmlColor="white" />
 									</IconButton>
 								</span>
 							</Tooltip>

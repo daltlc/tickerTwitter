@@ -7,16 +7,16 @@ import ActiveSelection from '../ActiveSelection';
 
 const Content = ({ master, selection }) => {
 	const activeContent = (() => {
-		if (isEmpty(master)) return <div style={{ color: 'black' }}>Please enter a stock symbol above</div>;
+		if (isEmpty(master)) return <div style={{ color: 'white' }}>Nothing to display</div>;
 		if (isEmpty(selection))
 			return (
-				<div style={{ color: 'black' }}>
+				<div style={{ color: 'white' }}>
 					<NoSelection master={master} />
 				</div>
 			);
 
 		return (
-			<div style={{ color: 'black' }}>
+			<div style={{ color: 'white' }}>
 				<ActiveSelection data={selection} />
 			</div>
 		);

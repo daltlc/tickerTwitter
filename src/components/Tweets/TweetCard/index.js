@@ -12,20 +12,22 @@ function TweetCard({ tweet }) {
 	const { user, entities, body } = tweet;
 
 	return (
-		<Paper>
-			<div>
-				<div>
+		<Paper elevation={3}>
+			<div className="tweet-main">
+				<div className="tweet-main__avatar">
 					<Avatar alt="user-avatar" src={user.avatar_url_ssl} />
 				</div>
-				<div>
-					<Typography>
+				<div className="tweet-main__user">
+					<Typography color="primary">
 						{'\u0040'}
 						{user.username}
 					</Typography>
 				</div>
 			</div>
 			<Divider />
-			<Typography>{body}</Typography>
+			<div className="tweet-body">
+				<Typography>{body}</Typography>
+			</div>
 		</Paper>
 	);
 }
