@@ -11,9 +11,9 @@ https://elastic-khorana-7c2b7c.netlify.app/
 In the project directory, you can run:
 
 ### `yarn lambda`
-### Make sure to do this step before yarn star
+### Make sure to do this step before yarn start
 
-At a high level, `netlify-lambda` takes a source folder (e.g. `src/lambda`, specified in your command) and outputs it to a built folder, (e.g. `built-lambda`, specified in your `netlify.toml` file).
+At a high level, `netlify-lambda` (yarn lambda) takes a source folder (e.g. `src/lambda`, specified in your command) and outputs it to a built folder, (e.g. `built-lambda`, specified in your `netlify.toml` file).
 
 The `build` function will run a single build of the functions in the folder.
 
