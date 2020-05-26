@@ -11,12 +11,21 @@ https://elastic-khorana-7c2b7c.netlify.app/
 In the project directory, you can run:
 
 ### `yarn lambda`
-### Make sure to do this step before yarn start
-This will build and host your netlify functions on localhost:9000
+### Make sure to do this step before yarn star
+
+At a high level, `netlify-lambda` takes a source folder (e.g. `src/lambda`, specified in your command) and outputs it to a built folder, (e.g. `built-lambda`, specified in your `netlify.toml` file).
+
+The `build` function will run a single build of the functions in the folder.
+
+The `serve` function will start a dev server for the source folder and route requests with a `.netlify/functions/` prefix, with a default port of `9000`:
+
+```
+folder/hello.js -> http://localhost:9000/.netlify/functions/hello
+```
 
 ### `yarn start`
 
-Runs the app in the development mode.<br />
+Runs the React app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.<br />
