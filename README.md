@@ -1,11 +1,18 @@
 # TickerTwitter
 
 
-This project was created to pull tweets from Stocktwitz on Twitter. Built using React, Material UI and works with a Node.js backend hosted on Heroku. 
+This project was created to pull tweets from the Stocktwitz API based on saved tickers. Built using React, Material UI and works with Netlify using lambda functions. 
 
-## Available Scripts
+## Project URL here:
+https://elastic-khorana-7c2b7c.netlify.app/
+
+## Available Scripts for local build
 
 In the project directory, you can run:
+
+### `yarn lambda`
+### Make sure to do this step before yarn start
+This will build and host your netlify functions on localhost:9000
 
 ### `yarn start`
 
