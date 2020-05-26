@@ -6,7 +6,7 @@ This project was created to pull tweets from the Stocktwitz API based on saved t
 ## Project URL here:
 https://elastic-khorana-7c2b7c.netlify.app/
 
-## Available Scripts for local build
+## Available Scripts
 
 In the project directory, you can run:
 
