@@ -17,7 +17,7 @@ function Search({ handleSearch, userInput, setUserInput, removeSymbol }) {
 		}
 	};
 	return (
-		<div>
+		<div className="search-main">
 			<div style={{ display: 'flex', alignItems: 'center', marginBottom: 20 + 'px' }}>
 				<SearchIcon />
 				<InputBase
