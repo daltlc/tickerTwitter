@@ -1,7 +1,7 @@
 # TickerTwitter
 
 
-This project was created to pull tweets from the Stocktwitz API based on saved tickers. Built using React, Material UI and works with Netlify using lambda functions. 
+This project was created to pull tweets from the Stocktwitz API based on saved stock symbols. Built using React, Material UI and works with Netlify using lambda functions. 
 
 ## Project URL here:
 https://elastic-khorana-7c2b7c.netlify.app/
